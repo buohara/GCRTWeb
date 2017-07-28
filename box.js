@@ -267,6 +267,6 @@ class Box
 	draw()
 	{
 		this.gl.bindVertexArray(this.vaoID);
-		this.gl.drawArrays(this.gl.TRIANGLES, 0, 30);
+		this.gl.drawArrays(this.gl.TRIANGLES, 0, 36);
 	}
 }
