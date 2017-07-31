@@ -23,13 +23,12 @@ class Renderer
 
 		this.scn.setCamera(cam);	
 		
-		//this.scn.addModel(new Box(gl));
 		var obj = JSON.parse(testMesh);
 		this.scn.addModel(new Mesh(gl, obj))
 
 		this.scn.addLight(
 			new PointLight(
-				vec3.fromValues(2.0, 4.0, 10.0),
+				vec3.fromValues(-8.0, -4.0, 2.0),
 				vec3.fromValues(5.0, 5.0, 5.0)
 			)
 		);
