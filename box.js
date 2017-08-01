@@ -1,8 +1,9 @@
-class Box
+class Box extends Mesh
 {
 	constructor(glIn)
 	{
-		this.gl = glIn;
+		super('Box', glIn);
+
 		this.vaoID = this.gl.createVertexArray();
 		this.gl.bindVertexArray(this.vaoID);
 		this.kd = vec3.fromValues(0.1, 0.1, 0.2);
@@ -13,8 +14,6 @@ class Box
 		this.genNormals();
 		this.genUVs();
 		this.genTans();
-
-		this.model = mat4.create();
 	}
 
 	genPositions()
@@ -188,8 +187,8 @@ class Box
 	    	uvs32[2 * i + 1] = uvs[i][1];
 	    }
 
-	    this.normVboID = this.gl.createBuffer();
-	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normVboID);
+	    this.uvVboID = this.gl.createBuffer();
+	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.uvVboID);
 	    this.gl.bufferData(this.gl.ARRAY_BUFFER, uvs32, this.gl.STATIC_DRAW, 0, uvs32.length);
 
 	    this.gl.vertexAttribPointer(2, 2, this.gl.FLOAT, gl.FALSE, 0, 0);
@@ -252,16 +251,6 @@ class Box
 
 	    this.gl.vertexAttribPointer(3, 3, this.gl.FLOAT, gl.FALSE, 0, 0);
     	this.gl.enableVertexAttribArray(3);
-	}
-
-	setModel(modelIn)
-	{
-		this.model = modelIn;
-	}
-
-	get Model()
-	{
-		return this.model;
 	}
 
 	draw()

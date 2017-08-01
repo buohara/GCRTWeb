@@ -9,7 +9,7 @@ class Renderer
 		gl.enable(gl.CULL_FACE);
 		gl.cullFace(gl.BACK);
 
-		this.scn = new Scene();
+		this.scn = new Scene(gl);
 
 		var cam = new Camera(
 			vec3.fromValues(10.0, 10.0, 10.0),
@@ -22,10 +22,18 @@ class Renderer
 		);
 
 		this.scn.setCamera(cam);	
+				
+		var model 		= new Model('DirtSphere');
+		var sphereMesh 	= new Sphere(gl, 20, 20);
+		var dirtMat 	= new Material('Dirt', gl);
+
+		dirtMat.diffuseTex 	= 'resources/dirtDiffuse.jpg';
+		//dirtMat.normalTex 	= 'resources/dirtNormal.jpg';
+
+		model.material 	= dirtMat;
+		model.mesh 		= sphereMesh;
 		
-		var obj = JSON.parse(testMesh);
-		//this.scn.addModel(new Mesh(gl, obj))
-		this.scn.addModel(new Sphere(gl, 28, 30));
+		this.scn.addModel(model);
 
 		this.scn.addLight(
 			new PointLight(

@@ -39,7 +39,22 @@ in vec2 passUV;
 uniform mat4 model;
 uniform mat4 modelInv;
 
+uniform sampler2D ambientTex;
+uniform sampler2D diffuseTex;
+uniform sampler2D normalTex;
+uniform sampler2D depthTex;
+
+uniform bool useDiffuseTex;
+uniform bool useAmbientTex;
+uniform bool useNormalTex;
+
 uniform vec3 kd;
+uniform vec3 ka;
+
+uniform float di;
+uniform float ai;
+uniform float si;
+
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 
@@ -47,11 +62,34 @@ out vec4 color;
 
 void main()
 {
-	vec4 pos        	= model * passPos;
-    vec3 lightVec   	= normalize(lightPos - pos.xyz);
-    float dist      	= length(lightVec);
-	vec3 norm 			= normalize((modelInv * passNorm).xyz);
-	float theta 		= max(dot(norm, lightVec), 0.0) / (dist * dist);
-	vec4 baseColor 		= vec4(theta * kd * lightColor, 1.0);
-	color 				= 1.0 - exp(-5.0 * baseColor);
+	vec4 pos        = model * passPos;
+    vec3 lightVec   = normalize(lightPos - pos.xyz);
+    float dist      = length(lightVec);
+	vec3 norm 		= normalize((modelInv * passNorm).xyz);
+	
+    vec3 diffColor;
+    if (useDiffuseTex == true)
+    {
+        diffColor = texture(diffuseTex, passUV).rgb;
+    }
+    else
+    {
+        diffColor = kd;
+    }
+    float theta     = max(dot(norm, lightVec), 0.0) / (dist * dist);
+	diffColor  = di * theta * diffColor;
+
+    vec3 ambientColor;
+    if (useAmbientTex == true)
+    {
+        //ambientColor = texture(ambientTex, passUV).rgb;
+    }
+    else
+    {
+        ambientColor = ka;
+    }
+
+
+    vec4 baseColor  = vec4(diffColor + ambientColor, 1);
+    color 			= 1.0 - exp(-5.0 * baseColor);
 }`;

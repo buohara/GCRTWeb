@@ -1,8 +1,9 @@
-class Sphere
+class Sphere extends Mesh
 {
 	constructor(glIn, rings, sectors)
 	{
-		this.gl = glIn;
+		super('Sphere', glIn);
+
 		this.vaoID = this.gl.createVertexArray();
 		this.gl.bindVertexArray(this.vaoID);
 		this.kd = vec3.fromValues(0.1, 0.1, 0.2);
@@ -11,8 +12,6 @@ class Sphere
 		this.genNormals(rings, sectors);
 		this.genUVs(rings, sectors);
 		this.genTans(rings, sectors);
-
-		this.model = mat4.create();
 	}
 
 	genPositions(rings, sectors)
@@ -337,16 +336,6 @@ class Sphere
 
 	    this.gl.vertexAttribPointer(3, 3, this.gl.FLOAT, gl.FALSE, 0, 0);
     	this.gl.enableVertexAttribArray(3);
-	}
-
-	setModel(modelIn)
-	{
-		this.model = modelIn;
-	}
-
-	get Model()
-	{
-		return this.model;
 	}
 
 	draw()
