@@ -10,9 +10,10 @@ class Renderer
 		gl.cullFace(gl.BACK);
 
 		this.scn = new Scene(gl);
+		this.t = Date.now();
 
 		var cam = new Camera(
-			vec3.fromValues(10.0, 10.0, 10.0),
+			vec3.fromValues(15.0, 15.0, 15.0),
 			vec3.fromValues(0.0, 0.0, 0.0),
 			vec3.fromValues(0.0, 0.0, -1.0),
 			4.0 / 3.0,
@@ -23,17 +24,50 @@ class Renderer
 
 		this.scn.setCamera(cam);	
 				
-		var model 		= new Model('DirtSphere');
-		var sphereMesh 	= new Sphere(gl, 20, 20);
+		/*
+		var dirtSphere 	= new Model('DirtSphere');
+		var sphereMesh 	= new Sphere(gl, 20, 20, false);
 		var dirtMat 	= new Material('Dirt', gl);
 
 		dirtMat.diffuseTex 	= 'resources/dirtDiffuse.jpg';
-		//dirtMat.normalTex 	= 'resources/dirtNormal.jpg';
+		dirtMat.normalTex 	= 'resources/dirtNormal.jpg';
 
-		model.material 	= dirtMat;
-		model.mesh 		= sphereMesh;
+		dirtSphere.material 	= dirtMat;
+		dirtSphere.mesh 		= sphereMesh;
 		
-		this.scn.addModel(model);
+		this.scn.addModel(dirtSphere);
+		*/
+
+		// Skybox
+
+		var skySphere = new Model('SkySphere');
+		var skyMesh = new Sphere(gl, 50, 50, true);
+		var skyMat = new Material('Sky', gl);
+
+		skyMat.ambientTex = 'resources/milkyway.jpg';
+		skyMat.ai = 1.0;
+		skyMat.di = 0.0;
+
+		skySphere.material = skyMat;
+		skySphere.mesh = skyMesh;
+		skySphere.scale(vec3.fromValues(30.0, 30.0, 30.0));
+
+		this.scn.addModel(skySphere);
+
+		// Particles
+
+		var particles = new Model('Particles');
+		var partMesh = new ParticleCloud(gl, 10000);
+
+		var partMat = new Material('Particles', gl);
+		partMat.ai = 1.0;
+		partMat.di = 0.0;
+		partMat.ka = vec3.fromValues(0.1, 1.0, 0.7);
+
+		particles.mesh = partMesh;
+		particles.material = partMat;
+
+		this.scn.addModel(particles);
 
 		this.scn.addLight(
 			new PointLight(
@@ -73,7 +107,11 @@ class Renderer
 
 	render()
 	{
-		this.scn.update();
+		var t2 = Date.now();
+		var dt = (t2 - this.t) / 1000.0;
+		this.t = t2;
+
+		this.scn.update(dt);
 
 		for (var i = 0; i < this.passes.length; i++)
 		{

@@ -24,6 +24,7 @@ void main()
     passBitan   = -cross(inTan, inNorm);
     passUV      = inUV;
 
+    gl_PointSize = 3.0;
     gl_Position = proj * view * model * vec4(inPos, 1);
 }`;
 
@@ -65,8 +66,19 @@ void main()
 	vec4 pos        = model * passPos;
     vec3 lightVec   = normalize(lightPos - pos.xyz);
     float dist      = length(lightVec);
-	vec3 norm 		= normalize((modelInv * passNorm).xyz);
+	vec3 norm;
 	
+    if (useNormalTex == true)
+    {
+        mat3 tbn    = mat3(passTan.xyz, passBitan.xyz, passNorm.xyz);
+        vec3 nmNorm = tbn * (2.0 * texture(normalTex, passUV).rgb - 1.0);
+        norm        = normalize(modelInv * vec4(nmNorm, 1)).xyz;
+    }
+    else
+    {
+        norm = normalize((modelInv * passNorm).xyz);
+    }
+
     vec3 diffColor;
     if (useDiffuseTex == true)
     {
@@ -82,13 +94,12 @@ void main()
     vec3 ambientColor;
     if (useAmbientTex == true)
     {
-        //ambientColor = texture(ambientTex, passUV).rgb;
+        ambientColor = ai * texture(ambientTex, passUV).rgb;
     }
     else
-    {
-        ambientColor = ka;
+    {   
+        ambientColor = ai * ka;
     }
-
 
     vec4 baseColor  = vec4(diffColor + ambientColor, 1);
     color 			= 1.0 - exp(-5.0 * baseColor);

@@ -7,9 +7,23 @@ class Mesh
 		this.model = mat4.create();
 	}
 
+	translate(tx)
+	{
+		mat4.translate(this.model, this.model, tx);
+	}
+
+	scale(scl)
+	{	
+		mat4.scale(this.model, this.model, scl);
+	}
+
 	get Model()
 	{
 		return this.model;
+	}
+
+	update(dt)
+	{
 	}
 
 	setMeshUniforms(prog)

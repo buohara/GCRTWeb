@@ -1,9 +1,10 @@
 class Sphere extends Mesh
 {
-	constructor(glIn, rings, sectors)
+	constructor(glIn, rings, sectors, invert)
 	{
 		super('Sphere', glIn);
 
+		this.invert = invert;
 		this.vaoID = this.gl.createVertexArray();
 		this.gl.bindVertexArray(this.vaoID);
 		this.kd = vec3.fromValues(0.1, 0.1, 0.2);
@@ -170,11 +171,17 @@ class Sphere extends Mesh
 
 	    var norms32 = new Float32Array(norms.length * 3);
 
-	    for(var i = 0; i < norms.length; i++)
+	    for (var i = 0; i < norms.length; i++)
 	    {
-	    	norms32[3 * i]     = norms[i][0];
-	    	norms32[3 * i + 1] = norms[i][1];
-	    	norms32[3 * i + 2] = norms[i][2];
+	    	var flip = 1.0;
+	    	if (this.invert == true)
+	    	{
+	    		flip = -1.0;
+	    	}
+
+	    	norms32[3 * i]     = flip * norms[i][0];
+	    	norms32[3 * i + 1] = flip * norms[i][1];
+	    	norms32[3 * i + 2] = flip * norms[i][2];
 	    }
 
 	    this.normVboID = this.gl.createBuffer();
@@ -340,9 +347,19 @@ class Sphere extends Mesh
 
 	draw()
 	{
+		if (this.invert == true)
+		{
+			this.gl.cullFace(gl.FRONT);
+		}
+
 		this.gl.bindVertexArray(this.vaoID);
 		this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.numSideVerts);
 		this.gl.drawArrays(gl.TRIANGLE_FAN, this.topOffset, this.numCapVerts);
 	    this.gl.drawArrays(gl.TRIANGLE_FAN, this.bottomOffset, this.numCapVerts);
+
+	    if (this.invert == true)
+		{
+			this.gl.cullFace(gl.BACK);
+		}
 	}
 }

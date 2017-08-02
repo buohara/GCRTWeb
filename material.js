@@ -7,8 +7,8 @@ class Material
 		this._kd = vec3.fromValues(0.3, 0.3, 0.3);
 		this._ka = vec3.fromValues(0.1, 0.1, 0.1);
 		
-		this._di = 1.0;
-		this._ai = 0.0;
+		this._di = 0.9;
+		this._ai = 0.1;
 		this._si = 0.0;
 		this.ready = false;
 
@@ -122,7 +122,7 @@ class Material
 		}
 		else
 		{
-			var kaID = this.gl.getUniformLocation(prog, "kaID");
+			var kaID = this.gl.getUniformLocation(prog, "ka");
 			this.gl.uniform3fv(kaID, this._ka);
 
 			var useAmbientTexID = this.gl.getUniformLocation(prog, "useAmbientTex");
@@ -147,7 +147,7 @@ class Material
 		}
 		else
 		{
-			var kdID = this.gl.getUniformLocation(prog, "kdID");
+			var kdID = this.gl.getUniformLocation(prog, "kd");
 			this.gl.uniform3fv(kdID, this._kd);
 
 			var useDiffuseTexID = this.gl.getUniformLocation(prog, "useDiffuseTex");
@@ -156,7 +156,7 @@ class Material
 
 		// Normal texturing uniforms.
 
-		if (this.normalTex == true)
+		if (this.useNormalTex == true)
 		{
 			this.gl.activeTexture(gl.TEXTURE2);
 			this.gl.bindTexture(this.gl.TEXTURE_2D, this._normalTex);

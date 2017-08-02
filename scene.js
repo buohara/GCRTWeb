@@ -49,8 +49,13 @@ class Scene
 		this.meshes.push(newMesh);
 	}
 
-	update()
+	update(dt)
 	{
+		for (var i = 0; i < this.models.length; i++)
+		{
+			this.models[i].update(dt);
+		}
+
 		this.cam.update();
 	}
 
