@@ -24,7 +24,7 @@ void main()
     passBitan   = -cross(inTan, inNorm);
     passUV      = inUV;
 
-    gl_PointSize = 3.0;
+    gl_PointSize = 2.0;
     gl_Position = proj * view * model * vec4(inPos, 1);
 }`;
 

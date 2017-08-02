@@ -1,3 +1,149 @@
+function OOBIntersect(
+	asize,
+	pa,
+	abasis,
+	bsize,
+	pb,
+	bbasis,
+)
+{
+	var v = vec3.create();
+	vec3.subtract(v, pb, pa);
+	
+	var T = vec3.fromValues(
+		dot(v, abasis[0]), 
+		dot(v, abasis[1]), 
+		dot(v, abasis[2])
+	);
+
+	var R = mat3.create();
+	
+	var ra;
+	var rb;
+	var t;
+
+	for (var i = 0; i < 3 ; i++)
+	{
+		for (var k = 0; k < 3; k++)
+		{ 
+			R[i][k] = vec3.dot(abasis[i], bbasis[k]);
+		}
+	}
+
+	// Six separating axes along faces of A and B
+
+	for (var i = 0; i < 3 ; i++)
+	{
+		ra = asize[i];
+		rb = bsize[0] * Math.abs(R[i][0]) + bsize[1] * Math.abs(R[i][1]) + bsize[2] * Math.abs(R[i][2]);
+		t = Math.abs(T[i]);
+
+		if (t > ra + rb)
+		{ 
+			return false;
+		}
+	}
+
+	for (var k = 0; k < 3; k++)
+	{
+
+		ra = asize[0] * Math.abs(R[0][k]) + asize[1] * Math.abs(R[1][k]) + asize[2] * Math.abs(R[2][k]);
+		rb = bsize[k];
+		t = Math.abs(T[0] * R[0][k] + T[1] * R[1][k] + T[2] * R[2][k]);
+
+		if (t > ra + rb)
+		{
+			return false;
+		}
+	}
+
+	// Separating axes formed by 9 planes spanned by
+	// edges of A and B
+
+	ra = asize[1] * Math.abs(R[2][0]) + asize[2] * Math.abs(R[1][0]);
+	rb = bsize[1] * Math.abs(R[0][2]) + bsize[2] * Math.abs(R[0][1]);
+	t = Math.abs(T[2] * R[1][0] - T[1] * R[2][0]);
+
+	if (t > ra + rb)
+	{
+		return false;
+	}
+
+	ra = asize[1] * Math.abs(R[2][1]) + asize[2] * Math.abs(R[1][1]);
+	rb = bsize[0] * Math.abs(R[0][2]) + bsize[2] * Math.abs(R[0][0]);
+	t = Math.abs(T[2] * R[1][1] - T[1] * R[2][1]);
+
+	if (t > ra + rb)
+	{
+		return false;
+	}
+
+	ra = asize[1] * Math.abs(R[2][2]) + asize[2] * Math.abs(R[1][2]);
+	rb = bsize[0] * Math.abs(R[0][1]) + bsize[1] * Math.abs(R[0][0]);
+	t = Math.abs(T[2] * R[1][2] - T[1] * R[2][2]);
+
+	if (t > ra + rb)
+	{
+		return false;
+	}
+
+	ra = asize[0] * Math.abs(R[2][0]) + asize[2] * Math.abs(R[0][0]);
+	rb = bsize[1] * Math.abs(R[1][2]) + bsize[2] * Math.abs(R[1][1]);
+	t = Math.abs(T[0] * R[2][0] - T[2] * R[0][0]);
+
+	if (t > ra + rb)
+	{
+		return false;
+	}
+
+	ra = asize[0] * Math.abs(R[2][1]) + asize[2] * Math.abs(R[0][1]);
+	rb = bsize[0] * Math.abs(R[1][2]) + bsize[2] * Math.abs(R[1][0]);
+	t = Math.abs(T[0] * R[2][1] - T[2] * R[0][1]);
+
+	if (t > ra + rb)
+	{
+		return false;
+	}
+
+	ra = asize[0] * Math.abs(R[2][2]) + asize[2] * Math.abs(R[0][2]);
+	rb = bsize[0] * Math.abs(R[1][1]) + bsize[1] * Math.abs(R[1][0]);
+	t = Math.abs(T[0] * R[2][2] - T[2] * R[0][2]);
+
+	if (t > ra + rb)
+	{
+		return false;
+	}
+
+	ra = asize[0] * Math.abs(R[1][0]) + asize[1] * Math.abs(R[0][0]);
+	rb = bsize[1] * Math.abs(R[2][2]) + bsize[2] * Math.abs(R[2][1]);
+	t = Math.abs(T[1] * R[0][0] - T[0] * R[1][0]);
+
+	if (t > ra + rb)
+	{
+		return false;
+	}
+
+	ra = asize[0] * Math.abs(R[1][1]) + asize[1] * Math.abs(R[0][1]);
+	rb = bsize[0] * Math.abs(R[2][2]) + bsize[2] * Math.abs(R[2][0]);
+	t = Math.abs(T[1] * R[0][1] - T[0] * R[1][1]);
+
+	if (t > ra + rb)
+	{
+		return false;
+	}
+
+	ra = asize[0] * Math.abs(R[1][2]) + asize[1] * Math.abs(R[0][2]);
+	rb = bsize[0] * Math.abs(R[2][1]) + bsize[1] * Math.abs(R[2][0]);
+	t = Math.abs(T[1] * R[0][2] - T[0] * R[1][2]);
+
+	if (t > ra + rb)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 class Box extends Mesh
 {
 	constructor(glIn)

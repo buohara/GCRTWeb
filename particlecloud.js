@@ -17,7 +17,7 @@ class ParticleCloud extends Mesh
 
 		for (var i = 0; i < numSinks; i++)
 		{
-			this.sinkMasses[i] = Math.random() * 2.0;
+			this.sinkMasses[i] = Math.random() * 50.0;
 
 			var x = 6.0 * Math.random() - 3.0;
 			var y = 6.0 * Math.random() - 3.0;
@@ -30,9 +30,9 @@ class ParticleCloud extends Mesh
 
 		for (var i = 0; i < numParticles; i++)
 		{
-			var x = 12.0 * Math.random() - 6.0;
-			var y = 12.0 * Math.random() - 6.0;
-			var z = 12.0 * Math.random() - 6.0;
+			var x = 3.0 * Math.random() - 6.0;
+			var y = 3.0 * Math.random() - 6.0;
+			var z = 3.0 * Math.random() - 6.0;
 
 			var vx = 6.0 * Math.random() - 3.0;
 			var vy = 6.0 * Math.random() - 3.0;
@@ -73,7 +73,7 @@ class ParticleCloud extends Mesh
 			}
 
 			vec3.scaleAndAdd(this.particlePos[i], this.particlePos[i], this.particleVel[i], dt);
-			vec3.scaleAndAdd(this.particleVel[i], this.particleVel[i], force, dt * invMass);
+			vec3.scaleAndAdd(this.particleVel[i], this.particleVel[i], force, 0.01 * dt * invMass);
 		}
 
 		var pos32 = new Float32Array(3 * this.particlePos.length);

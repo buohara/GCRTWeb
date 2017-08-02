@@ -13,7 +13,7 @@ class Renderer
 		this.t = Date.now();
 
 		var cam = new Camera(
-			vec3.fromValues(15.0, 15.0, 15.0),
+			vec3.fromValues(25.0, 25.0, 25.0),
 			vec3.fromValues(0.0, 0.0, 0.0),
 			vec3.fromValues(0.0, 0.0, -1.0),
 			4.0 / 3.0,
@@ -57,12 +57,12 @@ class Renderer
 		// Particles
 
 		var particles = new Model('Particles');
-		var partMesh = new ParticleCloud(gl, 10000);
+		var partMesh = new ParticleCloud(gl, 20000);
 
 		var partMat = new Material('Particles', gl);
 		partMat.ai = 1.0;
 		partMat.di = 0.0;
-		partMat.ka = vec3.fromValues(0.1, 1.0, 0.7);
+		partMat.ka = vec3.fromValues(1.0, 1.0, 1.0);
 
 		particles.mesh = partMesh;
 		particles.material = partMat;
