@@ -1,22 +1,33 @@
 function OOBIntersect(boxA, boxB)
 {
-	var asize 	= boxA.dims;
+	var asizeIn = boxA.dims;
 	var pa 		= boxA.pos;
 	var abasis  = boxA.axes;
-	var bsize 	= boxB.dims;
+	var bsizeIn = boxB.dims;
 	var pb 		= boxB.pos;
 	var bbasis  = boxB.axes;
+
+	var asize = vec3.create();
+	var bsize = vec3.create();
+
+	vec3.scale(asize, asizeIn, 0.5);
+	vec3.scale(bsize, bsizeIn, 0.5);
 
 	var v = vec3.create();
 	vec3.subtract(v, pb, pa);
 	
+	console.log(vec3.length(v));
+
 	var T = vec3.fromValues(
 		vec3.dot(v, abasis[0]), 
 		vec3.dot(v, abasis[1]), 
 		vec3.dot(v, abasis[2])
 	);
 
-	var R = mat3.create();
+	var R = [];
+	R[0] = vec3.create();
+	R[1] = vec3.create();
+	R[2] = vec3.create();
 	
 	var ra;
 	var rb;
@@ -42,14 +53,14 @@ function OOBIntersect(boxA, boxB)
 		t = Math.abs(T[i]);
 
 		if (t > ra + rb)
-		{ 
+		{
+			console.log("A axis ", i, ", ra ", ra, ", rb ", rb, ", t ", t);
 			return false;
 		}
 	}
 
 	for (var k = 0; k < 3; k++)
 	{
-
 		ra = asize[0] * Math.abs(R[0][k]) + 
 			asize[1] * Math.abs(R[1][k]) + 
 			asize[2] * Math.abs(R[2][k]);
@@ -59,6 +70,7 @@ function OOBIntersect(boxA, boxB)
 
 		if (t > ra + rb)
 		{
+			console.log("B axis ", k, ", ra ", ra, ", rb ", rb, ", t ", t);
 			return false;
 		}
 	}
@@ -72,6 +84,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
+		console.log("A0 X B0 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -81,6 +94,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
+		console.log("A0 X B1 ", ", ra ", ra, ", rb ", rb,", t ", t);
 		return false;
 	}
 
@@ -90,6 +104,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
+		console.log("A0 X B2 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -99,6 +114,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
+		console.log("A1 X B0 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -108,6 +124,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
+		console.log("A1 X B1 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -117,6 +134,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
+		console.log("A1 X B2 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -126,6 +144,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
+		console.log("A2 X B0 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -135,6 +154,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
+		console.log("A2 X B1 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -144,6 +164,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
+		console.log("A2 X B2 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -156,7 +177,7 @@ class OBB
 	{
 		this._pos = pos;
 		this._dims = dims;
-		this.model = mat3.create();
+		this.model = mat4.create();
 	}
 
 	set pos(pos)
@@ -174,6 +195,13 @@ class OBB
 		return this._dims;
 	}
 
+	rotate(axis, angle)
+	{
+		var tmp = mat4.create();
+		mat4.fromRotation(tmp, angle, axis);
+		this.model = tmp;
+	}
+
 	get pos()
 	{
 		return this._pos;
@@ -182,9 +210,9 @@ class OBB
 	get axes()
 	{
 		var axesOut = [];
-		axesOut [0] = vec3.fromValues(this.model[0], this.model[3], this.model[6]);
-		axesOut [1] = vec3.fromValues(this.model[1], this.model[4], this.model[7]);
-		axesOut [2] = vec3.fromValues(this.model[2], this.model[5], this.model[8]);
+		axesOut [0] = vec3.fromValues(this.model[0], this.model[4], this.model[8]);
+		axesOut [1] = vec3.fromValues(this.model[1], this.model[5], this.model[9]);
+		axesOut [2] = vec3.fromValues(this.model[2], this.model[6], this.model[10]);
 		return axesOut;
 	}
 }

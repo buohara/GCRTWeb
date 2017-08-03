@@ -45,6 +45,11 @@ class Model
 		this._mesh.scale(scl);
 	}
 
+	rotate(axis, angle)
+	{
+		this._mesh.rotate(axis, angle);
+	}
+
 	accel(a)
 	{
 		this._mesh.accel(a);

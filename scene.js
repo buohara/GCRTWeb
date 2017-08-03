@@ -54,6 +54,7 @@ class Scene
 	{
 		if (this.animate == false)
 		{
+			this.cam.update();
 			return;
 		}
 

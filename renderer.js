@@ -40,9 +40,9 @@ class Renderer
 
 		// Skybox
 
-		var skySphere = new Model('SkySphere');
-		var skyMesh = new Sphere(gl, 50, 50, true);
-		var skyMat = new Material('Sky', gl);
+		var skySphere 	= new Model('SkySphere');
+		var skyMesh 	= new Sphere(gl, 50, 50, true);
+		var skyMat 		= new Material('Sky', gl);
 
 		skyMat.ambientTex = 'resources/milkyway.jpg';
 		skyMat.ai = 1.0;
@@ -84,13 +84,30 @@ class Renderer
 		box2.mesh 		= box2Mesh;
 		box2.material 	= defaultMat;
 
-		box1.scale(vec3.fromValues(1.0, 2.0, 3.0));
+		box1.scale(vec3.fromValues(3.0, 1.0, 2.0));
 		box1.translate(vec3.fromValues(0.0, 5.0, 0.0));
-		box1.accel(vec3.fromValues(0.0, -0.01, 0.0));
+		box1.accel(vec3.fromValues(0.0, -0.9, 0.0));
 
-		box2.scale(vec3.fromValues(3.0, 1.0, 2.0));
+		box1.rotate(vec3.fromValues(
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			),
+			Math.random()
+		);
+
+		box2.scale(vec3.fromValues(1.0, 3.0, 2.0));
+
+		box2.rotate(vec3.fromValues(
+			Math.random(),
+			Math.random(),
+			Math.random(),
+			),
+			Math.random()
+		);
+
 		box2.translate(vec3.fromValues(0.0, -5.0, 0.0));
-		box2.accel(vec3.fromValues(0.0, 0.01, 0.0));
+		box2.accel(vec3.fromValues(0.0, 0.5, 0.0));
 
 		this.scn.addModel(box1);
 		this.scn.addModel(box2);
