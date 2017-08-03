@@ -2,7 +2,7 @@ class Model
 {
 	constructor(name)
 	{
-		this.name = name;
+		this._name = name;
 	}
 
 	set material(material)
@@ -13,6 +13,16 @@ class Model
 	set mesh(mesh)
 	{
 		this._mesh = mesh;
+	}
+
+	get name()
+	{
+		return this._name;
+	}
+
+	get bbox()
+	{
+		return this._mesh.bbox;
 	}
 
 	setMeshUniforms(prog)
@@ -33,6 +43,11 @@ class Model
 	scale(scl)
 	{	
 		this._mesh.scale(scl);
+	}
+
+	accel(a)
+	{
+		this._mesh.accel(a);
 	}
 
 	update(dt)

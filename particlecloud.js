@@ -72,8 +72,18 @@ class ParticleCloud extends Mesh
 				vec3.scaleAndAdd(force, force, curForce, massProduct);
 			}
 
-			vec3.scaleAndAdd(this.particlePos[i], this.particlePos[i], this.particleVel[i], dt);
-			vec3.scaleAndAdd(this.particleVel[i], this.particleVel[i], force, 0.01 * dt * invMass);
+			vec3.scaleAndAdd(
+				this.particlePos[i],
+				this.particlePos[i],
+				this.particleVel[i],
+				dt
+			);
+			
+			vec3.scaleAndAdd(
+				this.particleVel[i],
+				this.particleVel[i],
+				force, 0.01 * dt * invMass
+			);
 		}
 
 		var pos32 = new Float32Array(3 * this.particlePos.length);

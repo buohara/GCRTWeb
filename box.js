@@ -1,19 +1,19 @@
-function OOBIntersect(
-	asize,
-	pa,
-	abasis,
-	bsize,
-	pb,
-	bbasis,
-)
+function OOBIntersect(boxA, boxB)
 {
+	var asize 	= boxA.dims;
+	var pa 		= boxA.pos;
+	var abasis  = boxA.axes;
+	var bsize 	= boxB.dims;
+	var pb 		= boxB.pos;
+	var bbasis  = boxB.axes;
+
 	var v = vec3.create();
 	vec3.subtract(v, pb, pa);
 	
 	var T = vec3.fromValues(
-		dot(v, abasis[0]), 
-		dot(v, abasis[1]), 
-		dot(v, abasis[2])
+		vec3.dot(v, abasis[0]), 
+		vec3.dot(v, abasis[1]), 
+		vec3.dot(v, abasis[2])
 	);
 
 	var R = mat3.create();
@@ -35,7 +35,10 @@ function OOBIntersect(
 	for (var i = 0; i < 3 ; i++)
 	{
 		ra = asize[i];
-		rb = bsize[0] * Math.abs(R[i][0]) + bsize[1] * Math.abs(R[i][1]) + bsize[2] * Math.abs(R[i][2]);
+		rb = bsize[0] * Math.abs(R[i][0]) + 
+			bsize[1] * Math.abs(R[i][1]) + 
+			bsize[2] * Math.abs(R[i][2]);
+		
 		t = Math.abs(T[i]);
 
 		if (t > ra + rb)
@@ -47,7 +50,10 @@ function OOBIntersect(
 	for (var k = 0; k < 3; k++)
 	{
 
-		ra = asize[0] * Math.abs(R[0][k]) + asize[1] * Math.abs(R[1][k]) + asize[2] * Math.abs(R[2][k]);
+		ra = asize[0] * Math.abs(R[0][k]) + 
+			asize[1] * Math.abs(R[1][k]) + 
+			asize[2] * Math.abs(R[2][k]);
+
 		rb = bsize[k];
 		t = Math.abs(T[0] * R[0][k] + T[1] * R[1][k] + T[2] * R[2][k]);
 
@@ -57,8 +63,8 @@ function OOBIntersect(
 		}
 	}
 
-	// Separating axes formed by 9 planes spanned by
-	// edges of A and B
+	// Separating axes formed by 9 planes spanned by pairs of
+	// edges from A and B
 
 	ra = asize[1] * Math.abs(R[2][0]) + asize[2] * Math.abs(R[1][0]);
 	rb = bsize[1] * Math.abs(R[0][2]) + bsize[2] * Math.abs(R[0][1]);
@@ -142,6 +148,45 @@ function OOBIntersect(
 	}
 
 	return true;
+}
+
+class OBB
+{
+	constructor(pos, dims)
+	{
+		this._pos = pos;
+		this._dims = dims;
+		this.model = mat3.create();
+	}
+
+	set pos(pos)
+	{
+		this._pos = pos;
+	}
+
+	set dims(dims)
+	{
+		this._dims = dims;
+	}
+
+	get dims()
+	{
+		return this._dims;
+	}
+
+	get pos()
+	{
+		return this._pos;
+	}
+
+	get axes()
+	{
+		var axesOut = [];
+		axesOut [0] = vec3.fromValues(this.model[0], this.model[3], this.model[6]);
+		axesOut [1] = vec3.fromValues(this.model[1], this.model[4], this.model[7]);
+		axesOut [2] = vec3.fromValues(this.model[2], this.model[5], this.model[8]);
+		return axesOut;
+	}
 }
 
 class Box extends Mesh

@@ -56,6 +56,7 @@ class Renderer
 
 		// Particles
 
+		/*
 		var particles = new Model('Particles');
 		var partMesh = new ParticleCloud(gl, 20000);
 
@@ -68,6 +69,33 @@ class Renderer
 		particles.material = partMat;
 
 		this.scn.addModel(particles);
+		*/
+
+		var box1 = new Model('Box1');
+		var box2 = new Model('Box2');
+
+		var box1Mesh = new Box(gl);
+		var box2Mesh = new Box(gl);
+
+		var defaultMat = new Material('Default', gl);
+
+		box1.mesh 		= box1Mesh;
+		box1.material 	= defaultMat;
+		box2.mesh 		= box2Mesh;
+		box2.material 	= defaultMat;
+
+		box1.scale(vec3.fromValues(1.0, 2.0, 3.0));
+		box1.translate(vec3.fromValues(0.0, 5.0, 0.0));
+		box1.accel(vec3.fromValues(0.0, -0.01, 0.0));
+
+		box2.scale(vec3.fromValues(3.0, 1.0, 2.0));
+		box2.translate(vec3.fromValues(0.0, -5.0, 0.0));
+		box2.accel(vec3.fromValues(0.0, 0.01, 0.0));
+
+		this.scn.addModel(box1);
+		this.scn.addModel(box2);
+
+		// Lights
 
 		this.scn.addLight(
 			new PointLight(

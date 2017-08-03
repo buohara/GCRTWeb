@@ -2,11 +2,12 @@ class Scene
 {
 	constructor(gl)
 	{
-		this.gl = gl;
-		this.models = [];
-		this.lights = [];
-		this.meshes = [];
-		this.materials = [];
+		this.gl 		= gl;
+		this.models 	= [];
+		this.lights 	= [];
+		this.meshes 	= [];
+		this.materials 	= [];
+		this.animate 	= true;
 	}
 
 	setCamera(camIn)
@@ -51,9 +52,35 @@ class Scene
 
 	update(dt)
 	{
+		if (this.animate == false)
+		{
+			return;
+		}
+
 		for (var i = 0; i < this.models.length; i++)
 		{
 			this.models[i].update(dt);
+		}
+
+		for (var i = 0; i < this.models.length; i++)
+		{
+			if (this.models[i].name == 'Box1')
+			{
+				for (var j = i; j < this.models.length; j++)
+				{
+					if (this.models[j].name == 'Box2')
+					{
+						if (OOBIntersect(
+							this.models[i].bbox,
+							this.models[j].bbox) == true
+						)
+						{
+							this.animate = false;
+							return;
+						}
+					}
+				}
+			}
 		}
 
 		this.cam.update();
