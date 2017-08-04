@@ -2,7 +2,7 @@ class Sphere extends Mesh
 {
 	constructor(glIn, rings, sectors, invert)
 	{
-		super('Sphere', glIn);
+		super(glIn, 'Sphere');
 
 		this.invert = invert;
 		this.vaoID = this.gl.createVertexArray();

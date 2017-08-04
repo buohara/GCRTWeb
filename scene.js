@@ -45,7 +45,7 @@ class Scene
 		this.materials.push(newMaterial);
 	}
 
-	addmeshes(newMesh)
+	addMesh(newMesh)
 	{
 		this.meshes.push(newMesh);
 	}
@@ -107,5 +107,47 @@ class Scene
 		var lightColID = this.gl.getUniformLocation(prog, "lightColor");
 		var lightCol = this.lights[0].color;
 		this.gl.uniform3fv(lightColID, lightCol);
+	}
+
+	toJSON()
+	{	
+		var meshesJson = [];		
+		this.meshes.forEach(function(mesh)
+			{
+				meshesJson.push(mesh.toJSON());
+			}
+		);
+
+		var modelsJson = [];		
+		this.models.forEach(function(model)
+			{
+				modelsJson.push(model.toJSON());
+			}
+		);
+
+		var materialsJson = [];		
+		this.materials.forEach(function(mat)
+			{
+				materialsJson.push(mat.toJSON());
+			}
+		);
+
+		var lightsJson = [];		
+		this.meshes.forEach(function(light)
+			{
+				lightsJson.push(light.toJSON());
+			}
+		);
+
+		var me = 
+		{
+			models: modelsJson,
+			meshes: meshesJson,
+			materials: materialsJson,
+			camera: this.cam.toJSON(),
+			lights: lightsJson
+		};
+	
+		return me;
 	}
 }

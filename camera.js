@@ -20,9 +20,9 @@ class Camera
 		this.projection = mat4.create();
 		this.view 		= mat4.create();
 
-		this.keysDown = [];
-		this.txSpeed = 0.1;
-		this.rotSpeed = 0.001;
+		this.keysDown 	= [];
+		this.txSpeed 	= 0.1;
+		this.rotSpeed 	= 0.001;
 
 		mat4.perspective(
 			this.projection, 
@@ -38,6 +38,23 @@ class Camera
 			this.lookAt, 
 			this.up
 		);
+	}
+
+	toJSON()
+	{
+		var me =
+		{
+			pos: [this.pos[0], this.pos[1], this.pos[2]],
+			lookAt: [this.lookAt[0], this.lookAt[1], this.lookAt[2]],
+			aspect: this.aspect,
+			fov: this.fov,
+			nclip: this.nclip,
+			fclip: this.fclip,
+			txSpeed: this.txSpeed,
+			rotSpeed: this.rotSpeed
+		};
+
+		return me;
 	}
 
 	handleKeyDown(event)

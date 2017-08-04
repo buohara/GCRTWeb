@@ -1,9 +1,8 @@
 class Material
 {
-	constructor(name, glIn)
+	constructor(glIn)
 	{
 		this.gl = glIn;
-		this.name = name;
 		this._kd = vec3.fromValues(0.3, 0.3, 0.3);
 		this._ka = vec3.fromValues(0.1, 0.1, 0.1);
 		
@@ -15,6 +14,10 @@ class Material
 		this._diffuseTex = this.gl.createTexture();
 		this._ambientTex = this.gl.createTexture();
 		this._normalTex = this.gl.createTexture();
+
+		this._diffuseTexFile = "";
+		this._ambientTexFile = "";
+		this._normalTexFile = "";
 
 		this.useNormalTex = false;
 		this.useDiffuseTex = false;
@@ -44,6 +47,16 @@ class Material
 	set si(si)
 	{
 		this._si = si;
+	}
+
+	set name(name)
+	{
+		this._name = name;
+	}
+
+	get name()
+	{
+		return this._name;
 	}
 
 	initTexture(texFile, texture)
@@ -87,18 +100,21 @@ class Material
 	set ambientTex(ambientTexFile)
 	{
 		this.initTexture(ambientTexFile, this._ambientTex);
+		this._ambientTexFile = ambientTexFile;
 		this.useAmbientTex = true;
 	}
 
 	set diffuseTex(diffuseTexFile)
 	{
 		this.initTexture(diffuseTexFile, this._diffuseTex);
+		this._diffuseTexFile = diffuseTexFile;
 		this.useDiffuseTex = true;
 	}
 
 	set normalTex(normalTexFile)
 	{
 		this.initTexture(normalTexFile, this._normalTex);
+		this._normalTexFile = normalTexFile;
 		this.useNormalTex = true;
 	}
 
@@ -172,5 +188,23 @@ class Material
 			var useNormalTexID = this.gl.getUniformLocation(prog, "useNormalTex");
 			this.gl.uniform1i(useNormalTexID, false);
 		}
+	}
+
+	toJSON()
+	{
+		var me =
+		{
+			name: this._name,
+			ambientTex: this._ambientTexFile,
+			diffuseTex: this._diffuseTexFile,
+			normalTex: this._normalTexFile,
+			ai: this._ai,
+			di: this._di,
+			si: this._si,
+			ka: [this._ka[0], this._ka[1], this._ka[2]],
+			kd: [this._kd[0], this._kd[1], this._kd[2]]
+		};
+
+		return me;
 	}
 }

@@ -64,4 +64,15 @@ class Model
 	{
 		this._mesh.draw();
 	}
+
+	toJSON()
+	{
+		var me = { 
+			name: this._name,
+			mesh: this._mesh.name,
+			material: this._material.name
+		};
+
+		return me;
+	}
 }

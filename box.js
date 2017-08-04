@@ -16,7 +16,7 @@ function OOBIntersect(boxA, boxB)
 	var v = vec3.create();
 	vec3.subtract(v, pb, pa);
 	
-	console.log(vec3.length(v));
+	//console.log(vec3.length(v));
 
 	var T = vec3.fromValues(
 		vec3.dot(v, abasis[0]), 
@@ -54,7 +54,7 @@ function OOBIntersect(boxA, boxB)
 
 		if (t > ra + rb)
 		{
-			console.log("A axis ", i, ", ra ", ra, ", rb ", rb, ", t ", t);
+			//console.log("A axis ", i, ", ra ", ra, ", rb ", rb, ", t ", t);
 			return false;
 		}
 	}
@@ -70,7 +70,7 @@ function OOBIntersect(boxA, boxB)
 
 		if (t > ra + rb)
 		{
-			console.log("B axis ", k, ", ra ", ra, ", rb ", rb, ", t ", t);
+			//console.log("B axis ", k, ", ra ", ra, ", rb ", rb, ", t ", t);
 			return false;
 		}
 	}
@@ -84,7 +84,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
-		console.log("A0 X B0 ", ", ra ", ra, ", rb ", rb, ", t ", t);
+		///console.log("A0 X B0 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -94,7 +94,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
-		console.log("A0 X B1 ", ", ra ", ra, ", rb ", rb,", t ", t);
+		//console.log("A0 X B1 ", ", ra ", ra, ", rb ", rb,", t ", t);
 		return false;
 	}
 
@@ -104,7 +104,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
-		console.log("A0 X B2 ", ", ra ", ra, ", rb ", rb, ", t ", t);
+		//console.log("A0 X B2 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -114,7 +114,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
-		console.log("A1 X B0 ", ", ra ", ra, ", rb ", rb, ", t ", t);
+		//console.log("A1 X B0 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -124,7 +124,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
-		console.log("A1 X B1 ", ", ra ", ra, ", rb ", rb, ", t ", t);
+		//console.log("A1 X B1 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -134,7 +134,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
-		console.log("A1 X B2 ", ", ra ", ra, ", rb ", rb, ", t ", t);
+		//console.log("A1 X B2 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -144,7 +144,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
-		console.log("A2 X B0 ", ", ra ", ra, ", rb ", rb, ", t ", t);
+		//console.log("A2 X B0 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -154,7 +154,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
-		console.log("A2 X B1 ", ", ra ", ra, ", rb ", rb, ", t ", t);
+		//console.log("A2 X B1 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -164,7 +164,7 @@ function OOBIntersect(boxA, boxB)
 
 	if (t > ra + rb)
 	{
-		console.log("A2 X B2 ", ", ra ", ra, ", rb ", rb, ", t ", t);
+		//console.log("A2 X B2 ", ", ra ", ra, ", rb ", rb, ", t ", t);
 		return false;
 	}
 
@@ -221,7 +221,7 @@ class Box extends Mesh
 {
 	constructor(glIn)
 	{
-		super('Box', glIn);
+		super(glIn, 'Box');
 
 		this.vaoID = this.gl.createVertexArray();
 		this.gl.bindVertexArray(this.vaoID);

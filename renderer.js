@@ -42,8 +42,11 @@ class Renderer
 
 		var skySphere 	= new Model('SkySphere');
 		var skyMesh 	= new Sphere(gl, 50, 50, true);
-		var skyMat 		= new Material('Sky', gl);
+		var skyMat 		= new Material(gl);
 
+		skyMesh.name = "SkySphere";
+
+		skyMat.name = 'SkyMat';
 		skyMat.ambientTex = 'resources/milkyway.jpg';
 		skyMat.ai = 1.0;
 		skyMat.di = 0.0;
@@ -75,9 +78,12 @@ class Renderer
 		var box2 = new Model('Box2');
 
 		var box1Mesh = new Box(gl);
+		box1Mesh.name = 'Box1';
 		var box2Mesh = new Box(gl);
+		box2Mesh.name = 'Box2';
 
-		var defaultMat = new Material('Default', gl);
+		var defaultMat = new Material(gl);
+		defaultMat.name = 'Default';
 
 		box1.mesh 		= box1Mesh;
 		box1.material 	= defaultMat;
@@ -112,6 +118,13 @@ class Renderer
 		this.scn.addModel(box1);
 		this.scn.addModel(box2);
 
+		this.scn.addMaterial(defaultMat);
+		this.scn.addMaterial(skyMat);
+
+		this.scn.addMesh(skyMesh);
+		this.scn.addMesh(box1Mesh);
+		this.scn.addMesh(box2Mesh);
+
 		// Lights
 
 		this.scn.addLight(
@@ -123,6 +136,11 @@ class Renderer
 
 		this.passes = [];
 		this.passes.push(new RenderPass(1200, 800, gl));
+
+		var scnJson = JSON.stringify(this.scn);
+
+		console.log(scnJson);
+		var jsonObj = JSON.parse(scnJson);
 	}
 
 	handleKeyDown(event)

@@ -1,13 +1,14 @@
 class Mesh
 {
-	constructor(name, gl)
+	constructor(gl, type)
 	{
-		this.gl 	= gl;
-		this.name 	= name;
-		this.model 	= mat4.create();
-		
-		this.dims 	= vec3.fromValues(0, 0, 0);
-		
+		this.gl 		= gl;
+		this._name 		= "";
+		this._jsonFile 	= "";
+		this.model 		= mat4.create();
+		this._type 		= type;
+
+		this.dims 	= vec3.fromValues(0, 0, 0);	
 		this.vel 	= vec3.fromValues(0, 0, 0);
 		this.pos	= vec3.fromValues(0, 0, 0);
 		
@@ -85,6 +86,38 @@ class Mesh
 	get bbox()
 	{
 		return this.obb;
+	}
+
+	get name()
+	{
+		return this._name;
+	}
+
+	set name(name)
+	{
+		this._name = name;
+	}
+
+	get type()
+	{
+		return this._type;
+	}
+
+	set type(type)
+	{
+		this._type = type;
+	}
+
+	toJSON()
+	{
+		var me = 
+		{
+			name: this._name,
+			type: this._type,
+			jsonFile: this._jsonFile
+		};
+
+		return me;
 	}
 
 	update(dt)
