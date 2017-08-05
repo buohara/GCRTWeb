@@ -2,7 +2,7 @@ class JSONMesh extends Mesh
 {
 	constructor(glIn, mesh)
 	{
-		super(glIn, 'Type');
+		super(glIn, 'JSON');
 
 		this.vaoID 		= this.gl.createVertexArray();
 		
